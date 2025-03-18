@@ -67,3 +67,8 @@ body {
   background: #db9200;
   color: aliceblue;
 }
+
+.completed {
+  text-decoration: line-through;
+  color: #b3b3b3;
+}

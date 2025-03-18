@@ -17,7 +17,7 @@ function addTask() {
   const task = taskInput.value.trim();
   if (task) {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.push(task);
+    tasks.push({ text: task, completed: false });
     localStorage.setItem("tasks", JSON.stringify(tasks));
     taskInput.value = "";
     renderTasks();
@@ -31,12 +31,18 @@ function renderTasks() {
 
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
+    li.textContent = task.text;
     li.setAttribute("draggable", "true");
     li.setAttribute("data-index", index);
-    li.innerHTML = `
-      ${task} 
-      <button class="delete-btn" data-index="${index}">Delete</button>
-    `;
+    li.classList.toggle("completed", task.completed); // Apply class if completed
+
+    li.addEventListener("click", () => toggleTask(index));
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.onclick = () => deleteTask(index);
+
+    li.appendChild(deleteBtn);
     tasksList.appendChild(li);
 
     li.addEventListener("dragstart", handleDragStart);
@@ -50,6 +56,13 @@ function renderTasks() {
       deleteTask(this.getAttribute("data-index"));
     });
   });
+}
+
+function toggleTask(index) {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasks[index].completed = !tasks[index].completed; // Toggle completion state
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
 }
 
 function deleteTask(index) {
