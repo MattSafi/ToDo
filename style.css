@@ -29,11 +29,11 @@ body {
 }
 
 .tasks-list li {
-  padding: 10px;
-  border-bottom: 1px solid aliceblue;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
   cursor: pointer;
 }
 
@@ -41,17 +41,20 @@ body {
   border-bottom: none;
 }
 
-.delete-btn {
-  background: #ff4d4d;
-  color: aliceblue;
-  border: none;
+.tasks-list li .delete-btn {
+  text-decoration: none;
+  margin-left: 10px;
   padding: 5px 10px;
-  border-radius: 4px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.delete-btn:hover {
-  background: #ff1a1a;
+.tasks-list li .delete-btn:hover {
+  background-color: darkred;
 }
 
 #add-task-btn {

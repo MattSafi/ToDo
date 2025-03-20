@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+const title = localStorage.getItem("todoTitle") || "To-Do List";
+const titleElement = document.getElementById("editable-title");
+titleElement.textContent = title;
+titleElement.addEventListener("input", () => {
+  localStorage.setItem("todoTitle", titleElement.textContent);
+});
+
 function addTask() {
   const taskInput = document.querySelector(".task-input");
   const task = taskInput.value.trim();
@@ -32,6 +39,7 @@ function renderTasks() {
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
     li.textContent = task.text;
+    li.classList.toggle("completed", task.completed);
     li.setAttribute("draggable", "true");
     li.setAttribute("data-index", index);
     li.classList.toggle("completed", task.completed); // Apply class if completed
@@ -40,7 +48,11 @@ function renderTasks() {
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
-    deleteBtn.onclick = () => deleteTask(index);
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.onclick = () => {
+      event.stopPropagation();
+      deleteTask(index);
+    };
 
     li.appendChild(deleteBtn);
     tasksList.appendChild(li);
