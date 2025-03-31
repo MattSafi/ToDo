@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-const title = localStorage.getItem("todoTitle") || "To-Do List";
+const title =
+  localStorage.getItem("todoTitle") ||
+  "My Todo List" + " " + new Date().toLocaleDateString();
 const titleElement = document.getElementById("editable-title");
 titleElement.textContent = title;
 titleElement.addEventListener("input", () => {
@@ -42,15 +44,14 @@ function renderTasks() {
     li.classList.toggle("completed", task.completed);
     li.setAttribute("draggable", "true");
     li.setAttribute("data-index", index);
-    li.classList.toggle("completed", task.completed); // Apply class if completed
 
     li.addEventListener("click", () => toggleTask(index));
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
     deleteBtn.classList.add("delete-btn");
-    deleteBtn.onclick = () => {
-      event.stopPropagation();
+    deleteBtn.onclick = (event) => {
+      event.stopPropagation(); // Prevent the click event from bubbling up
       deleteTask(index);
     };
 
@@ -62,13 +63,13 @@ function renderTasks() {
     li.addEventListener("drop", handleDrop);
     li.addEventListener("dragend", handleDragEnd);
   });
-
-  document.querySelectorAll(".delete-btn").forEach((button) => {
-    button.addEventListener("click", function () {
-      deleteTask(this.getAttribute("data-index"));
-    });
-  });
 }
+
+document.querySelectorAll(".delete-btn").forEach((button) => {
+  button.addEventListener("click", function () {
+    deleteTask(this.getAttribute("data-index"));
+  });
+});
 
 function toggleTask(index) {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
